@@ -37,7 +37,7 @@ while not done:
                         pause = False
 
 # --- Drawing Code ---
-    screenstack[len(screenstack)-1].draw(screen, instructList)
+    screenstack[-1].draw(screen, instructList)
 
 # --- End Drawing Code ---
     pygame.display.flip()

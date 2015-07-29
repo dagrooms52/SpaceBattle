@@ -88,7 +88,6 @@ class GameScreen(BaseScreen):
 
         # Move player
         if self.moveLeft:
-            print("moving")
             self.player.moveLeft()
         elif self.moveRight:
             self.player.moveRight()
