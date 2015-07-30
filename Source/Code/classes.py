@@ -143,27 +143,30 @@ class Alien(pygame.sprite.Sprite):
 
     # --- Alien class variables
     speed = 1
-    xPos = 0
-    yPos = 0
+    width = 0
+    height = 0
 
     # --- Alien class methods
     def __init__(self):
-
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("../Assets/Sprites/Alien.png").convert()
         self.image.set_colorkey(WHITE)
 
         self.rect = self.image.get_rect()
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
 
-        self.rect.y = self.yPos
-        self.rect.x = self.xPos
+        self.rect.y = 0
+        self.rect.x = 0
 
     def update(self):
-
         if self.rect.y >= sc_height + self.rect.height:
             self.kill()
         self.rect.y += self.speed
 
+    def moveToCoord(self, x, y):
+        self.rect.x = x
+        self.rect.y = y
 
 
 class AlienLaser(pygame.sprite.Sprite):

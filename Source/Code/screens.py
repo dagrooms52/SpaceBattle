@@ -45,25 +45,28 @@ class GameScreen(BaseScreen):
         self.all_sprites_list.add(self.shield)
 
 
-        # Move overlapping aliens
-        for i in range(0, self.numAliens):
-            alien = Alien()
-            alien.rect.x = random.randrange(10, sc_width - 40)
-            alien.rect.y = -1 * (random.randrange(self.numAliens * 50))
+        # Create the round's aliens
+        # For positioning, have 1-5 aliens per "row"
+        # Spread evenly on the row
+        tempcount = 0
 
-            self.alien_list.add(alien)
-            self.all_sprites_list.add(alien)
+        aliens_left = self.numAliens
+        row_count = 0
+        while aliens_left > 0:
+            row_count += 1
+            numberInRow = random.randrange(3, 6)
+            for j in range(numberInRow):
+                alien = Alien()
 
-            for invader in self.alien_list:
-                alien_overlap_list = pygame.sprite.spritecollide(alien, self.alien_list, False)
+                # Set alien position
+                increment = sc_width / numberInRow
+                xpos = (j * increment) - (alien.width / 2) + (increment / 2);
+                ypos = -row_count * (alien.height * 5)
+                alien.moveToCoord(xpos, ypos)
+                aliens_left -= 1
 
-                for i in range(len(alien_overlap_list)):
-                    alien_overlap_list[i].rect.y -= 40 * i
-
-                    if alien_overlap_list[i].rect.x < sc_width / 2:
-                        alien_overlap_list[i].rect.x += 40
-                    else:
-                        alien_overlap_list[i].rect.x -= 40
+                self.alien_list.add(alien)
+                self.all_sprites_list.add(alien)
 
 
     # Drawing code, called from screen holder
@@ -118,7 +121,6 @@ class GameScreen(BaseScreen):
                 shot.setStart(start_x, start_y)
                 self.all_sprites_list.add(shot)
                 self.alien_laser_list.add(shot)
-                print("alien shot fired")
 
         #Move aliens and lasers
         self.alien_laser_list.update()
