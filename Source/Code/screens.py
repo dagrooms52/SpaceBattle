@@ -15,7 +15,7 @@ class StartMenu(BaseScreen):
 class GameScreen(BaseScreen):
 
     def __init__(self):
-        self.background_image = pygame.image.load("""../Assets/Sprites/SpaceInvaderBackground.png""").convert()
+        self.background_image = pygame.image.load("../Assets/Sprites/SpaceInvaderBackground.png").convert()
 
         # --- Sprite Lists ---
         self.laser_list = pygame.sprite.Group()
@@ -132,13 +132,12 @@ class GameScreen(BaseScreen):
         alien_hit_list = []
         for laser in self.laser_list:
             alien_hit_list = pygame.sprite.spritecollide(laser, self.alien_list, True)
-
-        for alien in alien_hit_list:
-            self.laser_list.remove(laser)
-            self.all_sprites_list.remove(laser)
-            alien.kill()
-            self.score += 1
-            print(self.score)
+            for alien in alien_hit_list:
+                self.laser_list.remove(laser)
+                self.all_sprites_list.remove(laser)
+                alien.kill()
+                self.score += 1
+                print(self.score)
 
         # Shrink hit shield
         if self.all_sprites_list.has(self.shield):
