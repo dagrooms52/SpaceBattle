@@ -21,8 +21,11 @@ clock = pygame.time.Clock()
 
 # Create and push screens to drawing list
 screenstack = []
-gameScreen = GameScreen()
+startScreen = StartMenu(screen)
+gameScreen = GameScreen(screen)
+
 screenstack.append(gameScreen)
+screenstack.append(startScreen)
 
 # --- Main Loop ---
 while not done:
@@ -40,11 +43,16 @@ while not done:
                     event = pygame.event.wait()
                     if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                         pause = False
+            if event.key == pygame.K_RETURN:
+                # Check which screen is up
+                if screenstack[-1].getType() == "StartMenu":
+                    screenstack.pop()
 
     # --- Drawing Code ---
 
     # Draw the top screen on the stack
-    screenstack[-1].draw(screen, instructList)
+    # Certain events push or pop certain screens onto the stack
+    screenstack[-1].draw(instructList)
 
     # --- End Drawing Code ---
     pygame.display.flip()

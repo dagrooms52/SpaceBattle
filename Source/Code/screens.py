@@ -2,20 +2,41 @@
 # Different screens for the game
 
 import pygame
+import ui
 from classes import *
+from constants import *
 
 class BaseScreen(object):
     def draw(self, instructions):
         pass
+    def getType(self):
+        return "BaseScreen"
 
 class StartMenu(BaseScreen):
+    def __init__(self, screen):
+        self.width = screen.get_width()
+        self.height = screen.get_height()
+        self.bgRGB = (34, 49, 63) #ebony
+        self.buttonRGB = (218, 223, 225)
+        self.highlightRGB = (25, 181, 254)
+        self.form = ui.Form(10, 10)
+
     def draw(self, instructions):
-        pass
+        self.form.draw()
+
+    def getType(self):
+        return "StartMenu"
+
 
 class GameScreen(BaseScreen):
 
-    def __init__(self):
-        self.background_image = pygame.image.load("../Assets/Sprites/SpaceInvaderBackground.png").convert()
+    def __init__(self, screen):
+        self.screen = screen
+        self.width = screen.get_width()
+        self.height = screen.get_height()
+        self.background_image = pygame.image.load(
+            "../Assets/Sprites/SpaceInvaderBackground.png"
+            ).convert()
 
         # --- Sprite Lists ---
         self.laser_list = pygame.sprite.Group()
@@ -30,7 +51,7 @@ class GameScreen(BaseScreen):
         self.numAliens = 100
 
         # Initialize player
-        self.player = Player(SCREEN_SIZE['width'] / 2)
+        self.player = Player(self.width / 2)
         self.player.setNumLasers(self.numAliens)
         self.moveLeft = False
         self.moveRight = False
@@ -48,7 +69,7 @@ class GameScreen(BaseScreen):
         # Create the round's aliens
         # For positioning, have 1-5 aliens per "row"
         # Spread evenly on the row
-        swarm_width = SCREEN_SIZE['width'] / 2
+        swarm_width = self.width / 2
         aliens_left = self.numAliens
         row_count = 0
         while aliens_left > 0:
@@ -60,7 +81,7 @@ class GameScreen(BaseScreen):
                 # Set alien position
                 increment = swarm_width / numberInRow
                 xpos = (j * increment) - (alien.width / 2) + (increment / 2) + \
-                       ((SCREEN_SIZE['width'] - swarm_width) / 2)
+                       ((self.width - swarm_width) / 2)
                 ypos = -row_count * (alien.height * 5)
                 alien.moveToCoord(xpos, ypos)
                 aliens_left -= 1
@@ -70,7 +91,7 @@ class GameScreen(BaseScreen):
 
 
     # Drawing code, called from screen holder
-    def draw(self, screen, instructions):
+    def draw(self, instructions):
 
         # Handle any input
         for event in instructions:
@@ -153,13 +174,20 @@ class GameScreen(BaseScreen):
                     print("You Lose")
 
         # Clear screen and draw sprites
-        screen.blit(self.background_image, [0, 0])
-        self.all_sprites_list.draw(screen)
+        self.screen.blit(self.background_image, [0, 0])
+        self.all_sprites_list.draw(self.screen)
+
+    def getType(self):
+        return "GameScreen"
 
 class PauseScreen(BaseScreen):
     def draw(self, instructions):
         pass
+    def getType(self):
+        return "PauseScreen"
 
 class OptionsScreen(BaseScreen):
     def draw(self, instructions):
         pass
+    def getType(self):
+        return "OptionsScreen"
