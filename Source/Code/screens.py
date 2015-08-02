@@ -30,7 +30,7 @@ class GameScreen(BaseScreen):
         self.numAliens = 100
 
         # Initialize player
-        self.player = Player()
+        self.player = Player(SCREEN_SIZE['width'] / 2)
         self.player.setNumLasers(self.numAliens)
         self.moveLeft = False
         self.moveRight = False
@@ -48,8 +48,7 @@ class GameScreen(BaseScreen):
         # Create the round's aliens
         # For positioning, have 1-5 aliens per "row"
         # Spread evenly on the row
-        tempcount = 0
-
+        swarm_width = SCREEN_SIZE['width'] / 2
         aliens_left = self.numAliens
         row_count = 0
         while aliens_left > 0:
@@ -59,8 +58,9 @@ class GameScreen(BaseScreen):
                 alien = Alien()
 
                 # Set alien position
-                increment = sc_width / numberInRow
-                xpos = (j * increment) - (alien.width / 2) + (increment / 2);
+                increment = swarm_width / numberInRow
+                xpos = (j * increment) - (alien.width / 2) + (increment / 2) + \
+                       ((SCREEN_SIZE['width'] - swarm_width) / 2)
                 ypos = -row_count * (alien.height * 5)
                 alien.moveToCoord(xpos, ypos)
                 aliens_left -= 1

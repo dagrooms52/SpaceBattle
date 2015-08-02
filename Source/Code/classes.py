@@ -16,39 +16,41 @@ class Player(pygame.sprite.Sprite):
     # --- Player class variables ---
     height = 0
     width = 0
-    speed = 6
+    speed = 8
     left_accel_speed = 2
     right_accel_speed = 2
-    startX = sc_width / 2
+    accel_rate = 1.09
+    startX = SCREEN_SIZE['width'] / 2
     yPos = 0
     numLasers = 0
     numMissiles = 0
     laserMultiplier = 2
 
     # --- Player class methods ---
-    def __init__(self):
+    def __init__(self, position):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("../Assets/Sprites/Spaceship.png").convert()
         self.image.set_colorkey(WHITE)
         self.rect = self.image.get_rect()
         self.width = self.rect.width
         self.height = self.rect.height
-        self.yPos = sc_height - 80 + (self.height / 2)
+        self.yPos = SCREEN_SIZE['height'] - (self.height * 4)
         self.rect.y = self.yPos
-        self.rect.x = self.startX
+        # Centered on passed position
+        self.rect.x = position - (self.width / 2)
 
     def moveLeft(self):
         if not (self.rect.x <= 5):
             if self.left_accel_speed < self.speed:
-                self.left_accel_speed *= 1.1 #self.speed
+                self.left_accel_speed *= self.accel_rate
                 self.rect.x -= int(self.left_accel_speed)
             else:
                 self.rect.x -= self.speed
 
     def moveRight(self):
-        if not (self.rect.x + self.width + 4 >= sc_width):
+        if not (self.rect.x + self.width + 4 >= SCREEN_SIZE['width']):
             if self.right_accel_speed < self.speed:
-                self.right_accel_speed *= 1.1
+                self.right_accel_speed *= self.accel_rate
                 self.rect.x += int(self.right_accel_speed)
             else:
                 self.rect.x += self.speed
@@ -160,7 +162,7 @@ class Alien(pygame.sprite.Sprite):
         self.rect.x = 0
 
     def update(self):
-        if self.rect.y >= sc_height + self.rect.height:
+        if self.rect.y >= SCREEN_SIZE['height'] + self.rect.height:
             self.kill()
         self.rect.y += self.speed
 
@@ -193,7 +195,7 @@ class AlienLaser(pygame.sprite.Sprite):
 
     def update(self):
 
-        if self.rect.y > sc_height:
+        if self.rect.y > SCREEN_SIZE['height']:
             self.kill()
         self.rect.y += self.speed
 

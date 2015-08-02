@@ -1,14 +1,17 @@
 import pygame
 import math
 import random
+import constants
 from classes import *
 from screens import *
 
 pygame.init()
 
 # --- Screen Setup ---
-size = (sc_width, sc_height)
-screen = pygame.display.set_mode(size)
+screen = pygame.display.set_mode((0,0), (pygame.FULLSCREEN|pygame.NOFRAME))
+constants.SCREEN_SIZE['width'] = screen.get_width()
+constants.SCREEN_SIZE['height'] = screen.get_height()
+
 font = pygame.font.SysFont('Calibri', 25, True, False)
 
 pygame.display.set_caption("Space Invaders")
@@ -28,6 +31,8 @@ while not done:
         if event.type == pygame.QUIT:
             done = True
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                done = True
             if event.key == pygame.K_p: #pause game
                 pause = True
                 print('pause')
@@ -36,10 +41,12 @@ while not done:
                     if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                         pause = False
 
-# --- Drawing Code ---
+    # --- Drawing Code ---
+
+    # Draw the top screen on the stack
     screenstack[-1].draw(screen, instructList)
 
-# --- End Drawing Code ---
+    # --- End Drawing Code ---
     pygame.display.flip()
     clock.tick(60)
 

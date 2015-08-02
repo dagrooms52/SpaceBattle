@@ -1,8 +1,6 @@
 import math
 
-
-sc_height = 900
-sc_width = 500
+SCREEN_SIZE = {'width':0, 'height':0}
 
 BLACK    = (   0,   0,   0)
 WHITE    = ( 255, 255, 255)
