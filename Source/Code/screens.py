@@ -14,12 +14,16 @@ class BaseScreen(object):
 
 class StartMenu(BaseScreen):
     def __init__(self, screen):
+        self.screen = screen
         self.width = screen.get_width()
         self.height = screen.get_height()
         self.bgRGB = (34, 49, 63) #ebony
+        self.spaceRGB = (3, 11, 30)
         self.buttonRGB = (218, 223, 225)
         self.highlightRGB = (25, 181, 254)
-        self.form = ui.Form(10, 10)
+
+        self.form = ui.Form(screen, self.spaceRGB,
+                    "Press Enter")
 
     def draw(self, instructions):
         self.form.draw()

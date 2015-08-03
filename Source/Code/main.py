@@ -15,6 +15,7 @@ constants.SCREEN_SIZE['height'] = screen.get_height()
 font = pygame.font.SysFont('Calibri', 25, True, False)
 
 pygame.display.set_caption("Space Invaders")
+pygame.mouse.set_visible(False)
 pause = False
 done = False
 clock = pygame.time.Clock()

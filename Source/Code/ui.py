@@ -4,23 +4,24 @@
 import pygame
 
 class Form(pygame.sprite.Sprite):
-    def __init__(self, xpos, ypos):
+    def __init__(self, screen, color, title="default"):
         pygame.sprite.Sprite.__init__(self)
-        self.width = 20
-        self.height = 20
-        self.x = xpos
-        self.y = ypos
-
-        self.image = pygame.Surface([self.x, self.y])
-        self.image.fill((34, 49, 63))
+        self.title = title
+        self.screen = screen
+        self.width = screen.get_width()
+        self.height = screen.get_height()
+        self.color = color
 
     def draw(self):
-        pygame.draw.rect(self.image, (34, 49, 63),
-                         pygame.Rect((self.x, self.y),
-                                    (self.width, self.height)))
-        self.rect = self.image.get_rect()
-        self.rect.x = self.x
-        self.rect.y = self.y
+        pygame.draw.rect(self.screen, self.color,
+                         pygame.Rect((0, 0),
+                        (self.width, self.height)))
+
+        myfont = pygame.font.SysFont("monospace", 50)
+        label = myfont.render(self.title, 1, (255, 255, 255))
+        self.screen.blit(label,
+                        (self.width/2 - myfont.size(self.title)[0]/2,
+                        self.height/2 - myfont.size(self.title)[1]/2))
 
 class Label:
     def __init__(self):
