@@ -52,7 +52,8 @@ class GameScreen(BaseScreen):
 
         # --- Initializations ---
         self.score = 0
-        self.numAliens = 100
+        self.numAliens = 30
+        self.bossyet = False
 
         # Initialize player
         self.player = Player(self.width / 2)
@@ -78,15 +79,15 @@ class GameScreen(BaseScreen):
         row_count = 0
         while aliens_left > 0:
             row_count += 1
-            numberInRow = random.randrange(3, 6)
+            numberInRow = random.randrange(2, 4)
             for j in range(numberInRow):
                 alien = Alien()
 
                 # Set alien position
                 increment = swarm_width / numberInRow
-                xpos = (j * increment) - (alien.width / 2) + (increment / 2) + \
-                       ((self.width - swarm_width) / 2)
-                ypos = -row_count * (alien.height * 5)
+                xpos = (j * increment) - (alien.width / 2) \
+                        + (increment / 2) + ((self.width - swarm_width) / 2)
+                ypos = -row_count * (alien.height * 15)
                 alien.moveToCoord(xpos, ypos)
                 aliens_left -= 1
 
@@ -133,6 +134,14 @@ class GameScreen(BaseScreen):
             self.shoot = False
             self.player.numLasers -= 1
             print("number of lasers: " + str(self.player.numLasers))
+
+        # Send boss if all aliens are dead
+        if len(self.alien_list.sprites()) == 0 and not self.bossyet:
+            self.bossyet = True
+            boss = Boss()
+            boss.moveToCoord((self.width/2) - boss.width, -boss.height)
+            self.alien_list.add(boss)
+            self.all_sprites_list.add(boss)
 
         # Firing alien lasers
         aliens = self.alien_list.sprites()

@@ -144,7 +144,7 @@ class Laser(pygame.sprite.Sprite):
 class Alien(pygame.sprite.Sprite):
 
     # --- Alien class variables
-    speed = 1
+    speed = 2
     width = 0
     height = 0
 
@@ -202,3 +202,20 @@ class AlienLaser(pygame.sprite.Sprite):
     def setStart(self, xCoord, yCoord):
         self.rect.x = xCoord
         self.rect.y = yCoord
+
+class Boss(Alien):
+
+    def __init__(self):
+        # Sprite -> Alien -> Boss
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = pygame.image.load("../Assets/Sprites/Boss.png").convert()
+        self.image.set_colorkey(WHITE)
+
+        self.rect = self.image.get_rect()
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
+
+        self.rect.y = 0
+        self.rect.x = 0
+        self.speed = 1
