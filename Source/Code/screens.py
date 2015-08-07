@@ -143,6 +143,7 @@ class GameScreen(BaseScreen):
             self.alien_list.add(boss)
             self.all_sprites_list.add(boss)
 
+        """
         # Firing alien lasers
         aliens = self.alien_list.sprites()
         if len(aliens) > 0 :
@@ -155,6 +156,11 @@ class GameScreen(BaseScreen):
                 shot.setStart(start_x, start_y)
                 self.all_sprites_list.add(shot)
                 self.alien_laser_list.add(shot)
+        """
+        for alien in self.alien_list:
+            newlasers = alien.getLaserList()
+            self.alien_laser_list.add(newlasers)
+            self.all_sprites_list.add(newlasers)
 
         #Move aliens and lasers
         self.alien_laser_list.update()

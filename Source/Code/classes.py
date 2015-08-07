@@ -161,10 +161,27 @@ class Alien(pygame.sprite.Sprite):
         self.rect.y = 0
         self.rect.x = 0
 
+        self.laser_list = pygame.sprite.Group()
+
     def update(self):
         if self.rect.y >= SCREEN_SIZE['height'] + self.rect.height:
             self.kill()
         self.rect.y += self.speed
+
+        if self.rect.y + self.height > 0:
+            # Keep from calling this every update cycle unless needed
+            if random.randrange(4500) <= 10:
+                self.shoot()
+
+    def shoot(self):
+        shot = AlienLaser(3)
+        start_x = self.rect.x + (self.rect.width / 2) - 1
+        start_y = self.rect.y + self.rect.height
+        shot.setStart(start_x, start_y)
+        self.laser_list.add(shot)
+
+    def getLaserList(self):
+        return self.laser_list
 
     def moveToCoord(self, x, y):
         self.rect.x = x
